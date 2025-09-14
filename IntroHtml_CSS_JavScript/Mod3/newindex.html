@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <style>
+      /* Styles the main container of the to-do list */
+      .todo-container {
+        width: 300px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      /* Removes default list styling for the to-do list */
+      .todo-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      /* Styles each list item in the to-do list */
+      li {
+        margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Adds spacing for buttons in list items */
+      button {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo-container">
+      <h1>To-Do List</h1>
+
+      <!-- Input field to add new tasks -->
+      <input type="text" id="taskInput" placeholder="Add a new task" />
+
+      <!-- Button to add a new task to the list -->
+      <button class="add-btn" onclick="addTask()">Add Task</button>
+
+      <!-- Unordered list to display the tasks -->
+      <ul class="todo-list" id="todoList"></ul>
+    </div>
+
+    <script>
+      /* 
+  This function handles the addition of a new task to the to-do list.
+  It retrieves the user input, creates the necessary HTML elements
+  (task text, Edit and Delete buttons), appends them to the list,
+  and clears the input field after successful addition.
+*/
+      function addTask() {
+        // Get the input field element
+        const input = document.getElementById("taskInput");
+
+        // Get the trimmed value entered by the user
+        const taskText = input.value.trim();
+
+        /* 
+    Proceed only if the input is not empty.
+    If the user tries to add an empty task, show an alert instead.
+  */
+        if (taskText !== "") {
+          // Get the <ul> element where tasks will be listed
+          const ul = document.getElementById("todoList");
+
+          // Create a new <li> element to represent the task item
+          const li = document.createElement("li");
+
+          // Create a <span> to hold the task text
+          const span = document.createElement("span");
+          span.textContent = taskText;
+
+          /* 
+      Create an "Edit" button. 
+      When clicked, it will allow the user to edit the task via a prompt.
+    */
+          const editButton = document.createElement("button");
+          editButton.textContent = "Edit";
+          editButton.onclick = () => editTask(span);
+
+          /* 
+      Create a "Delete" button.
+      When clicked, it will remove the task from the list.
+    */
+          const removeButton = document.createElement("button");
+          removeButton.textContent = "Delete";
+          removeButton.onclick = () => removeTask(li);
+
+          // Add the task text and both buttons to the list item
+          li.appendChild(span);
+          li.appendChild(editButton);
+          li.appendChild(removeButton);
+
+          // Add the completed list item to the main task list
+          ul.appendChild(li);
+
+          // Clear the input field so user can type a new task
+          input.value = "";
+        } else {
+          // If input is empty, show an alert asking for valid input
+          alert("Please enter a valid task.");
+        }
+      }
+
+      /* 
+  This function allows the user to edit an existing task.
+  It prompts the user with the current task value and updates it if the new input is valid.
+*/
+      function editTask(span) {
+        const newTask = prompt("Edit your task:", span.textContent);
+
+        // If the user provides a valid, non-empty new task, update the task text
+        if (newTask !== null && newTask.trim() !== "") {
+          span.textContent = newTask.trim();
+        }
+      }
+
+      /* 
+  This function removes a task from the to-do list.
+  It takes the list item (<li>) as input and removes it from the list (<ul>).
+*/
+      function removeTask(task) {
+        const ul = document.getElementById("todoList");
+        ul.removeChild(task);
+      }
+    </script>
+  </body>
+</html>
